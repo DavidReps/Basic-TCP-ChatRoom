@@ -22,6 +22,7 @@ func main() {
 	}
 
 	for {
+		
 		//connect client to the currently existing server
 		go server.newClient(conn)
 
