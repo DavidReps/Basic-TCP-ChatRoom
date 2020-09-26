@@ -6,6 +6,10 @@ import (
 	"os"
 )
 
+func SendServerPointer(server *server) **server {
+	return &server
+}
+
 func main() {
 
 	arguments := os.Args
@@ -22,7 +26,7 @@ func main() {
 	}
 
 	for {
-		
+
 		//connect client to the currently existing server
 		go server.newClient(conn)
 
