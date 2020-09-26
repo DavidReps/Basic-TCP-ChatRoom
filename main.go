@@ -1,3 +1,5 @@
+//
+
 package main
 
 import (
@@ -5,8 +7,19 @@ import (
 	"net"
 )
 
+func ReturnServerPointer(server *server) server {
+	return *server
+
+}
+
+//we create a new server
 func main() {
+
 	s := newServer()
+
+	ReturnServerPointer(s)
+
+	//go routine to interpret commands from the client
 	go s.run()
 
 	listener, err := net.Listen("tcp", ":9000")
@@ -15,7 +28,7 @@ func main() {
 	}
 
 	defer listener.Close()
-	log.Printf("server started on :9000")
+	log.Printf("server started on port :9000")
 
 	for {
 		conn, err := listener.Accept()
@@ -24,6 +37,7 @@ func main() {
 			continue
 		}
 
+		//create new clients when they join
 		go s.newClient(conn)
 	}
 }
