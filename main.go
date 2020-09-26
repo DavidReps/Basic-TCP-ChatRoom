@@ -7,17 +7,14 @@ import (
 	"net"
 )
 
-func ReturnServerPointer(server *server) server {
-	return *server
-
-}
 
 //we create a new server
 func main() {
 
 	s := newServer()
 
-	ReturnServerPointer(s)
+	//send pointer to server to be accessed by client
+	SendServerPointer(s)
 
 	//go routine to interpret commands from the client
 	go s.run()
