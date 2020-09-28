@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// define what is the client
+//all relevant information about clients
 type client struct {
 	conn     net.Conn
 	name     string
@@ -15,7 +15,7 @@ type client struct {
 	commands chan<- command
 }
 
-//read input and execute desired commands
+//read input, interpret, and execute desired commands
 func (c *client) readInput() {
 	for {
 		msg, err := bufio.NewReader(c.conn).ReadString('\n')
@@ -23,7 +23,6 @@ func (c *client) readInput() {
 			return
 		}
 
-		//parse out the message segments
 		msg = strings.Trim(msg, "\r\n")
 		args := strings.Split(msg, " ")
 		cmd := strings.TrimSpace(args[0])
@@ -53,15 +52,8 @@ func (c *client) readInput() {
 				id:     CMD_Rooms,
 				client: c,
 			}
-/*
-		//list members within a current room
-		case "/listM":
-			c.commands <- command{
-			id:			CMD_ListMembers,
-			client: 	c,
-			}
-*/
-		//send message to the room
+
+		//send message to the whole room
 		case "/msg":
 			c.commands <- command{
 				id:     CMD_Msg,
@@ -77,8 +69,14 @@ func (c *client) readInput() {
 			args: 		args,
 			}
 
+		//returns client to "lobby" to then join a new room
+		case "/back":
+			c.commands <- command{
+				id:     CMD_Exit,
+				client: c,
+			}
 
-		//exit the room
+		//exit the server
 		case "EXIT":
 			c.commands <- command{
 				id:     CMD_Exit,
@@ -97,11 +95,12 @@ func (c *client) err(err error) {
 	c.conn.Write([]byte("error: " + err.Error() + "\n"))
 }
 
-//how the messages are displayed in the room
+//writes message on specified client side
 func (c *client) msg(msg string) {
-	c.conn.Write([]byte("-> " + msg + "\n"))
+	c.conn.Write([]byte( msg + "\n"))
 }
 
-//used for presenting messages not from members
+//used for presenting messages when client interacts with only server
 func (c *client) DisplayMsg(msg string) {
 	c.conn.Write([]byte(msg + "\n"))
+}
