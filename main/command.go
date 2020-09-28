@@ -9,7 +9,7 @@ const (
 	CMD_Msg
 	CMD_Private_Message
 	CMD_Exit
-	CMD_ListMembers
+	CMD_Back
 )
 
 //each command needs to know the id, name of client calling it, and the actual string which may be required
