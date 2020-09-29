@@ -72,7 +72,7 @@ func (s *server) newClient(conn net.Conn) {
 //todo only allow unique names to be chosen
 func (s *server) name(c *client, name string) {
 	c.name = name
-	c.msg(fmt.Sprintf("-> Hello %s", name))
+	c.msg(fmt.Sprintf("----Hello %s----", name))
 }
 
 //join a room is equal to adding client to the map of that room
@@ -94,7 +94,7 @@ func (s *server) join(c *client, roomName string) {
 	c.room = r
 
 	//notify all members in the chat of a new arrival
-	r.broadcast(c, fmt.Sprintf("%s has joined the chat", c.name))
+	r.broadcast(c, fmt.Sprintf("-------%s has joined the chat-------", c.name))
 
 	//welcome the client to the room
 	c.DisplayMsg(fmt.Sprintf("--------Welcome to room: %s--------", roomName))
@@ -114,10 +114,13 @@ func (s *server) listRooms(c *client) {
 }
 
 //standard room message broadcast
-//remove broadcast
 func (s *server) msg(c *client, args []string,) {
-	msg := strings.Join(args[1:len(args)], " ")
-	c.room.broadcast(c, c.name + ": " + msg)
+	//msg := strings.Join(args[1:len(args)], " ")
+
+	text := strings.Join(args, " ")
+
+	CompleteMessage := "From <" + c.name + "> (Publicly) " + text
+	c.room.broadcast(c, CompleteMessage)
 }
 
 //leaving the room protocol
@@ -126,7 +129,7 @@ func (s *server) quit(c *client) {
 
 	s.quitCurrentRoom(c)
 
-	c.msg("later fader")
+	c.msg("----Connection Terminated----")
 	c.conn.Close()
 
 }
@@ -167,4 +170,5 @@ func (s *server) Pmsg(c *client, recipient string, message []string){
 	c.err(fmt.Errorf("unknown client: %s", recipient))
 	return
 }
+
 
