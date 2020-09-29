@@ -1,0 +1,62 @@
+Overview:
+
+Here we have the implementation of a simple TCP based Chat room. Users are allowed to join the TCP server from the command line, create a unique username, join/create chat rooms, 
+and send public or private messages. Rooms are maps populated with clients, who are themselves structures. This allows us to delete members using map's built in delet method. 
+Modifying client structure fields as well as finding rooms is done through commands. Diversity of choice is the name of the game so we elected to allow the user to either send a 
+public message to the entire room or, if they so choose, send a private message to a member of their room. We also allow users to see which rooms exist and allow them 
+to choose which one to join or create an entirely new one if they desire. It is our sincereest hope that this implementation can be perfected and modified so as to allow it to 
+operate over the internet. 
+
+caveat:
+Our EXIT command closes the connection but does not reset the command line. This can be accomplished by connecting via telnet rather than running ClientJoin. To excecute in this 
+manner. Run the server as described below. For each client in an empty commnd line run: telnet localhost "port number". this will fix the isses with EXIT and still runs via TCP 
+protocol
+
+Commands:
+
+/name "desired username"
+  - this command will modify your name to the input
+/join "room name"
+  - this will join you into the desired room. If the desired room does not exist it will create a new room.
+/rooms
+  - this will list all rooms which have been created allowing you to choose where you join
+/msg "message'
+  - this sends a public message to the entire room
+/pmsg "to field" "message content"
+  - this command will send a private message to a username in your current room
+    - if the name is not in the room an error is thrown
+/back
+  - this command leaves you current room returning you to the lobby
+EXIT
+  - this command closes the communication preventing you from sending or reieving any messages
+  
+  
+Excecution:
+
+- The server must first be created:
+
+In the main directory:
+
+run go build .
+then run ./main
+
+This will prompt the user to enter desired port.
+
+
+Next create the client.
+
+In the processes directory:
+
+for each client:
+ 
+run go build .
+Then run go run ClientRun.go 
+
+when prompted enter the same port as the server
+
+
+references:
+
+we used the command and structures decribed in: 
+
+https://github.com/plutov/packagemain/tree/master/20-tcp-chat/chat
