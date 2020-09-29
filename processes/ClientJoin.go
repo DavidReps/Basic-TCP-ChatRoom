@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net"
 	"os"
-	// "strings"
 )
 
 func read(c net.Conn){
@@ -36,6 +35,7 @@ func write(c net.Conn){
 
 	}
 }
+
 func main(){
 
 	arguments := os.Args
@@ -53,6 +53,7 @@ func main(){
 
 	defer conn.Close()
 
+	//continuously read info and write it to the server
 	go read(conn)
 	write(conn)
 
