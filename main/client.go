@@ -104,3 +104,4 @@ func (c *client) msg(msg string) {
 func (c *client) DisplayMsg(msg string) {
 	c.conn.Write([]byte(msg + "\n"))
 }
+
