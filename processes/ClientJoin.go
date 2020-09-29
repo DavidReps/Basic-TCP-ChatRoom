@@ -6,7 +6,7 @@ import (
 	"net"
 	"os"
 )
-
+//todo exit comand prompt when connection is severed
 func read(c net.Conn){
 
 	for {
